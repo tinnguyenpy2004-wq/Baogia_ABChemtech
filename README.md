@@ -137,6 +137,10 @@ AI không được gọi trong runtime của prototype. Không có secret, dữ 
 - Bổ sung integration test cho idempotency, retry, worker crash, file bị khóa và mất kết nối.
 - Chỉ đưa Codex CLI/LLM vào các bước có thể fallback an toàn; mọi output AI phải được validate trước khi sử dụng.
 
+## 7. File báo giá mẫu xuất từ prototype
+
+- File HTML mẫu: [samples/sample-quote.html](samples/sample-quote.html)
+
 ## Tài liệu liên quan
 
 - [SOLUTION_PLAN.md](SOLUTION_PLAN.md): thiết kế kiến trúc chi tiết, data flow Mermaid và rủi ro vận hành.

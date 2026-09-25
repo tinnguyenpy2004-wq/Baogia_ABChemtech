@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\BaoGia.Api.props" />
-</Project>
