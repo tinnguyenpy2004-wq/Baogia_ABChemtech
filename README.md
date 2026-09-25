@@ -137,13 +137,36 @@ AI không được gọi trong runtime của prototype. Không có secret, dữ 
 - Bổ sung integration test cho idempotency, retry, worker crash, file bị khóa và mất kết nối.
 - Chỉ đưa Codex CLI/LLM vào các bước có thể fallback an toàn; mọi output AI phải được validate trước khi sử dụng.
 
-## 7. File báo giá mẫu xuất từ prototype
+## 7. Cơ chế template và file báo giá mẫu xuất từ prototype
 
-Hệ thống đã kết xuất sẵn các file báo giá mẫu hoàn chỉnh trực tiếp từ worker của prototype:
-- Báo giá đơn lẻ tiêu chuẩn: [samples/sample-quote.html](samples/sample-quote.html) (Mã `BG-20260925-015308-727`, Khách hàng Công ty TNHH Hóa Chất Minh Phát)
+### Template nguồn của hệ thống
+Hệ thống sử dụng file template chuẩn hóa tại [templates/quote-template.html](templates/quote-template.html) chứa các biến placeholder ngữ nghĩa:
+- Biến thông tin định danh & thời gian: `{{QUOTE_NUMBER}}`, `{{CREATED_DATE}}`, `{{VALID_UNTIL}}`
+- Biến khách hàng & điều khoản: `{{CUSTOMER_NAME}}`, `{{CUSTOMER_ID}}`, `{{DELIVERY_TERMS}}`, `{{PAYMENT_TERMS}}`
+- Biến bảng hàng hóa & tài chính: `{{ITEMS_ROWS}}`, `{{SUBTOTAL}}`, `{{TOTAL}}`
+
+Khi worker xử lý job, worker đọc file template từ đĩa, thực hiện HTML encode dữ liệu đầu vào để chống injection, định dạng tiền tệ theo văn hóa Việt Nam (`vi-VN`) và thay thế placeholder thành tài liệu báo giá hoàn chỉnh.
+
+### File báo giá mẫu xuất từ template
+- Báo giá đơn lẻ tiêu chuẩn: [samples/sample-quote.html](samples/sample-quote.html) (Mã `BG-20260925-015308-727`, Khách hàng: Công ty TNHH Hóa Chất Minh Phát)
 - Báo giá đa sản phẩm: [samples/sample-quote-multi-items.html](samples/sample-quote-multi-items.html) (Mã `BG-20260925-021045-889`, minh họa báo giá gồm nhiều dòng hóa chất công nghiệp, quy cách đóng gói và tổng hợp chi phí)
 
-Người dùng hoặc người chấm có thể mở trực tiếp các file `.html` trên trong bất kỳ trình duyệt nào để xem giao diện hóa đơn/báo giá thương mại tiêu chuẩn A4, hỗ trợ in ấn (`Ctrl + P` / `Cmd + P`).
+### Lý do kỹ thuật phù hợp khi chọn định dạng đầu ra (HTML Print-ready / Web-standard)
+So với DOCX, XLSX và PDF nguyên thủy, việc chọn định dạng **HTML với CSS Print-ready** cho bản prototype dựa trên các cơ sở kỹ thuật sau:
+
+1. **Khả chuyển và tối giản phụ thuộc (Zero External Dependencies & Cross-platform):**
+   - Không yêu cầu cài đặt Microsoft Office, LibreOffice hay các thư viện native C++ (như SkiaSharp, Puppeteer, wkhtmltopdf) vốn nặng nề và phức tạp khi chạy đa nền tảng (Windows, macOS trên Mac mini, Linux Docker).
+   - Đảm bảo prototype chạy ngay lập tức bằng duy nhất lệnh `dotnet run` mà người chấm không gặp lỗi thiếu dependency hệ thống.
+2. **Khả năng xem trước tức thì và in ấn chuẩn A4 (Instant Preview & Direct PDF Export):**
+   - Trình duyệt web có sẵn trên mọi thiết bị có thể mở trực tiếp để xem trước ngay trên dashboard hoặc tab mới với độ trung thực 100%.
+   - Định dạng tích hợp sẵn `@media print` đạt chuẩn khổ giấy A4, người dùng chỉ cần nhấn `Ctrl + P` (hoặc `Cmd + P`) là có thể xuất ngay file **PDF chất lượng vector** sắc nét mà không bị vỡ layout hay lỗi font chữ tiếng Việt.
+3. **An toàn bảo mật (Security & Anti-Injection):**
+   - Tránh triệt để rủi ro **Formula Injection** vốn rất phổ biến trên file XLSX khi dữ liệu người dùng nhập bắt đầu bằng `=`, `+`, `-`, `@`.
+   - Tránh nguy cơ macro hoặc nhúng mã độc trong định dạng DOCX. Dữ liệu văn bản được escape an toàn qua `HtmlEncoder`.
+4. **Tách biệt giao diện và logic (Separation of Concerns):**
+   - Người quản trị hoặc thiết kế có thể dễ dàng tùy biến logo, màu sắc thương hiệu, điều khoản pháp lý trong file `templates/quote-template.html` mà không cần build lại mã nguồn backend.
+5. **Định hướng Production:**
+   - Trong môi trường production, worker container có thể tích hợp Chromium headless hoặc Playwright để tự động chuyển đổi template HTML này thành file PDF ký số (Digital Signature / e-Invoice) và lưu trữ trên Object Storage (S3/Azure Blob).
 
 ## Tài liệu liên quan
 

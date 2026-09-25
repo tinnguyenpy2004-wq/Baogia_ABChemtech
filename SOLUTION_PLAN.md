@@ -83,8 +83,31 @@ Worker pull job thay vi API push vao Mac mini: khong can mo cong Mac mini ra Int
 
 ## 5. Pham vi prototype
 
-**Lam that:** form/API, validate, QuoteJob, trang thai, worker polling, mapping template, kiem tra file, idempotency va retry co ban.
+**Lam that:** form/API, validate, QuoteJob, trang thai, worker polling, render theo template tach biet (`templates/quote-template.html`), kiem tra file, idempotency va retry co ban.
 
-**Mock:** CRM, Mac mini (chay Worker local), Codex CLI.
+**Mock:** CRM, Mac mini (chay Worker local trong API), Codex CLI.
 
-**De sau:** PDF, email, monitoring nang cao, key rotation, backup tu dong va SQL Server.
+**De sau:** Microservice render PDF tu dong bang Chromium headless, email tu dong, monitoring nang cao, key rotation, backup tu dong va database PostgreSQL/SQL Server.
+
+## 6. Quyet dinh ky thuat ve Template va Dinh dang file dau ra
+
+### Co che Template
+Prototype su dung file template HTML tach biet (`templates/quote-template.html`) thay vi hard-code giao dien trong logic nghiep vu:
+- Dinh nghia cac placeholder ro rang: `{{QUOTE_NUMBER}}`, `{{CUSTOMER_NAME}}`, `{{CUSTOMER_ID}}`, `{{DELIVERY_TERMS}}`, `{{PAYMENT_TERMS}}`, `{{ITEMS_ROWS}}`, `{{SUBTOTAL}}`, `{{TOTAL}}`.
+- Worker doc template tu dia, encode du lieu bang `HtmlEncoder` de phong ngua injection, format tien te theo `vi-VN` va lap rap du lieu.
+
+### Ly do ky thuat lua chon dinh dang HTML Print-ready thay vi DOCX/XLSX/PDF
+1. **Zero External Dependencies & Kha chuyen da nen tang:**
+   - Cac thu vien DOCX (OpenXML) hoac XLSX (ClosedXML/EPPlus) va cac engine PDF headless (SkiaSharp, wkhtmltopdf, Puppeteer) thuong phu thuoc binary he dieu hanh va de xung dot phien ban giua Windows, macOS (Mac mini worker) va Linux container.
+   - HTML thuần cho phep prototype chay ngay lap tuc tren moi moi truong bang mot lenh `dotnet run` duy nhat ma khong can bat ky external dependency nao.
+2. **Xem truoc tuc thi va ho tro xuat PDF vector chuan A4:**
+   - File HTML mo duoc tren moi trinh duyet, nhung truc tiep vao web dashboard khong can phan mem Office hay Adobe.
+   - CSS tich hop `@media print` chuan kho giay A4, cho phep nguoi dung nhan `Ctrl + P` (hoac `Cmd + P`) de luu ngay thanh file **PDF vector chat luong cao**, giu nguyen 100% typography va bo nhan dien thuong hieu An Binh Chemtech.
+3. **An toan bao mat (Anti-Injection):**
+   - Loai tru triet de rui ro **Formula Injection** khi xuat XLSX (khi nguoi dung nhap ky tu dau `=`, `+`, `-`, `@`).
+   - Loai tru rui ro macro doc hai trong DOCX. Du lieu duoc sanitize va encode an toan qua `HtmlEncoder`.
+4. **Tach biet giao dien (Separation of Concerns):**
+   - Cho phep doi ngu kinh doanh/thiet ke chinh sua bo nhan dien, mau sac, dieu khoan trong file template ma khong can recompile backend.
+5. **Kien truc san sang cho Production:**
+   - Khi len production, he thong chi can bo sung microservice renderer (Gotenberg hoac Chromium headless) de tu dong convert template HTML sang PDF co ky so e-Invoice.
+

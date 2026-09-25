@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BaoGia.Domain\BaoGia.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="templates\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
