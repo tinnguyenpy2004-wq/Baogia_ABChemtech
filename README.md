@@ -139,7 +139,11 @@ AI không được gọi trong runtime của prototype. Không có secret, dữ 
 
 ## 7. File báo giá mẫu xuất từ prototype
 
-- File HTML mẫu: [samples/sample-quote.html](samples/sample-quote.html)
+Hệ thống đã kết xuất sẵn các file báo giá mẫu hoàn chỉnh trực tiếp từ worker của prototype:
+- Báo giá đơn lẻ tiêu chuẩn: [samples/sample-quote.html](samples/sample-quote.html) (Mã `BG-20260925-015308-727`, Khách hàng Công ty TNHH Hóa Chất Minh Phát)
+- Báo giá đa sản phẩm: [samples/sample-quote-multi-items.html](samples/sample-quote-multi-items.html) (Mã `BG-20260925-021045-889`, minh họa báo giá gồm nhiều dòng hóa chất công nghiệp, quy cách đóng gói và tổng hợp chi phí)
+
+Người dùng hoặc người chấm có thể mở trực tiếp các file `.html` trên trong bất kỳ trình duyệt nào để xem giao diện hóa đơn/báo giá thương mại tiêu chuẩn A4, hỗ trợ in ấn (`Ctrl + P` / `Cmd + P`).
 
 ## Tài liệu liên quan
 
