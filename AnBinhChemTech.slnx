@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="QuoteExecutor/QuoteExecutor.csproj" />
+  <Project Path="QuoteFiller.Tests/QuoteFiller.Tests.csproj" />
+  <Project Path="QuoteFiller/QuoteFiller.csproj" />
+</Solution>

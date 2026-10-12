@@ -1,0 +1,26 @@
+{
+  "quoteNumber": {
+    "sequence": "0001",
+    "yearMonth": "2606",
+    "revision": "01"
+  },
+  "customer": "Công ty Cổ phần Thực phẩm Á Châu (Asia Foods)",
+  "quoteDate": "2026-06-25",
+  "items": [
+    {
+      "productName": "Tetrasodium Pyrophosphate (TSPP)",
+      "priceWithoutVat": 51560,
+      "priceWithVat": 55685
+    },
+    {
+      "productName": "Sodium Tripolyphosphate (STPP)",
+      "priceWithoutVat": 51560,
+      "priceWithVat": 55685
+    },
+    {
+      "productName": "Sodium Hexametaphosphate (SHMP)",
+      "priceWithoutVat": 51560,
+      "priceWithVat": 58519
+    }
+  ]
+}

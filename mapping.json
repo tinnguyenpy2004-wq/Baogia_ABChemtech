@@ -1,0 +1,36 @@
+{
+  "quoteNumberShape": "txt_so_bao_gia",
+  "customerShape": "txt_ten_khach_hang",
+  "quoteDateShape": "txt_ngay_thang_bao_gia",
+  "shapeNameAliases": {
+    "txt_so_bao_gia": ["Google Shape;46;p1"],
+    "txt_ten_khach_hang": ["Google Shape;20;p1"],
+    "txt_ngay_thang_bao_gia": ["Google Shape;42;p1"],
+    "txt_ten_hang_1": ["Google Shape;28;p1"],
+    "txt_don_gia_chua_vat_1": ["Google Shape;29;p1"],
+    "txt_don_gia_da_bao_gom_vat_1": ["Google Shape;30;p1"],
+    "txt_ten_hang_2": ["Google Shape;32;p1"],
+    "txt_don_gia_chua_vat_2": ["Google Shape;33;p1"],
+    "txt_don_gia_da_bao_gom_vat_2": ["Google Shape;34;p1"],
+    "txt_ten_hang_3": ["Google Shape;36;p1"],
+    "txt_don_gia_chua_vat_3": ["Google Shape;37;p1"],
+    "txt_don_gia_da_bao_gom_vat_3": ["Google Shape;38;p1"]
+  },
+  "items": [
+    {
+      "nameShape": "txt_ten_hang_1",
+      "priceWithoutVatShape": "txt_don_gia_chua_vat_1",
+      "priceWithVatShape": "txt_don_gia_da_bao_gom_vat_1"
+    },
+    {
+      "nameShape": "txt_ten_hang_2",
+      "priceWithoutVatShape": "txt_don_gia_chua_vat_2",
+      "priceWithVatShape": "txt_don_gia_da_bao_gom_vat_2"
+    },
+    {
+      "nameShape": "txt_ten_hang_3",
+      "priceWithoutVatShape": "txt_don_gia_chua_vat_3",
+      "priceWithVatShape": "txt_don_gia_da_bao_gom_vat_3"
+    }
+  ]
+}
