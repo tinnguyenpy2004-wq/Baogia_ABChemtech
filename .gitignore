@@ -10,7 +10,11 @@
 # Laravel & PHP
 /laravel-quote-client/vendor/
 /laravel-quote-client/public/storage
-/laravel-quote-client/storage/*.key
+# Environment files (bảo mật tuyệt đối thông tin nhạy cảm)
+.env
+.env.*
+!.env.example
+*.env
 /laravel-quote-client/.env
 /laravel-quote-client/database/*.sqlite
 /laravel-quote-client/database/*.sqlite-journal
